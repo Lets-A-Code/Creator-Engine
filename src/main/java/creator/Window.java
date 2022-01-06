@@ -57,7 +57,7 @@ public class Window {
     public void run() {
         System.out.println("java Runtime Environment (JRE) version:- " + System.getProperty("java.version"));
         System.out.println("LWJGL Version:- " + Version.getVersion() + "\n");
-        System.out.println(this.title + " Made using The Creator-Engine.");
+        System.out.println(this.title + " Made using The Creator-Engine." + "\n");
 
         init();
         loop();
