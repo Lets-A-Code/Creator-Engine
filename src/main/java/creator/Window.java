@@ -1,5 +1,6 @@
 package creator;
 
+import org.lwjgl.Version;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 import util.Time;
@@ -33,10 +34,11 @@ public class Window {
         switch (newScene) {
             case 0:
                 currentScene = new LevelEditorScene();
-                //currentScene.init();
+                currentScene.init();
                 break;
             case 1:
                 currentScene = new LevelScene();
+                currentScene.init();
                 break;
             default:
                 assert false : "Unknown scene '" + newScene + "'";
@@ -53,6 +55,8 @@ public class Window {
     }
 
     public void run() {
+        System.out.println("java Runtime Environment (JRE) version:- " + System.getProperty("java.version"));
+        System.out.println("LWJGL Version:- " + Version.getVersion() + "\n");
         System.out.println(this.title + " Made using The Creator-Engine.");
 
         init();
