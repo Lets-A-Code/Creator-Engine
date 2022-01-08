@@ -15,6 +15,7 @@ public class Window {
     private long glfwWindow;
 
     public float r, g, b, a;
+    private boolean fadeToBlack = false;
 
     private static Window window = null;
 
@@ -24,9 +25,9 @@ public class Window {
         this.width = 1920;
         this.height = 1080;
         this.title = "Mario";
-        r = 1;
-        b = 1;
-        g = 1;
+        r = 0;
+        b = 0;
+        g = 0;
         a = 1;
     }
 
@@ -56,10 +57,14 @@ public class Window {
         return Window.window;
     }
 
+    public static Scene getScene() {
+        return get().currentScene;
+    }
+
     public void run() {
         System.out.println("java Runtime Environment (JRE) version:- " + System.getProperty("java.version"));
         System.out.println("LWJGL Version:- " + Version.getVersion() + "\n");
-        System.out.println(this.title + " Made using The Creator-Engine." + "\n");
+        System.out.println("'" + this.title + "'" + " Made using The Creator-Engine." + "\n");
 
         init();
         loop();
@@ -68,13 +73,13 @@ public class Window {
         glfwFreeCallbacks(glfwWindow);
         glfwDestroyWindow(glfwWindow);
 
-        // Terminate GLFW and free the error callback
+        // Terminate GLFW and the free the error callback
         glfwTerminate();
         glfwSetErrorCallback(null).free();
     }
 
     public void init() {
-        // Setup a error callback
+        // Setup an error callback
         GLFWErrorCallback.createPrint(System.err).set();
 
         // Initialize GLFW
@@ -88,10 +93,10 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
         glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
-        // Create the Window
+        // Create the window
         glfwWindow = glfwCreateWindow(this.width, this.height, this.title, NULL, NULL);
-        if ( glfwWindow == NULL ) {
-            throw new RuntimeException("Failed to create the GLFW window");
+        if (glfwWindow == NULL) {
+            throw new IllegalStateException("Failed to create the GLFW window.");
         }
 
         glfwSetCursorPosCallback(glfwWindow, MouseListener::mousePosCallback);
@@ -101,7 +106,6 @@ public class Window {
 
         // Make the OpenGL context current
         glfwMakeContextCurrent(glfwWindow);
-
         // Enable v-sync
         glfwSwapInterval(1);
 
