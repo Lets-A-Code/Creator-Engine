@@ -1,11 +1,14 @@
 plugins {
     id "java"
+    id "application"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 group "com.LetsACode"
 version "1.1.0"
 
-sourceCompatibility = 11
+sourceCompatibility = 1.8
+mainClassName = "Main"
 
 project.ext.lwjglVersion = "3.3.0"
 project.ext.jomlVersion = "1.10.2"
