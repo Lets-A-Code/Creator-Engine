@@ -7,6 +7,9 @@ import util.AssetPool;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class LevelEditorScene extends Scene {
+    private GameObject mario;
+    private Spritesheet sprites;
+
     public LevelEditorScene() {
 
     }
@@ -17,9 +20,9 @@ public class LevelEditorScene extends Scene {
 
         this.camera = new Camera(new Vector2f(-250, 0));
 
-        Spritesheet sprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
+        sprites = AssetPool.getSpritesheet("assets/images/spritesheet.png");
 
-        GameObject mario = new GameObject("Mario", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)));
+        mario = new GameObject("Mario", new Transform(new Vector2f(100, 100), new Vector2f(256, 256)));
         mario.addComponent(new SpriteRenderer(sprites.getSprite(0)));
         this.addGameObjectToScene(mario);
 
@@ -36,18 +39,23 @@ public class LevelEditorScene extends Scene {
                         16, 16, 26, 0));
     }
 
+    private int spriteIndex = 0;
+    private float spriteFlipTime = 0.2f;
+    private float spriteFlipTimeLeft = 0.0f;
+
     @Override
     public void update(float dt) {
-        if (KeyListener.isKeyPressed(GLFW_KEY_UP) || KeyListener.isKeyPressed(GLFW_KEY_W)) {
-            camera.position.y += 250f * dt;
-        } else if (KeyListener.isKeyPressed(GLFW_KEY_DOWN) || KeyListener.isKeyPressed(GLFW_KEY_S)) {
-            camera.position.y -= 250f * dt;
-        }
+        spriteFlipTimeLeft -= dt;
 
-        if (KeyListener.isKeyPressed(GLFW_KEY_LEFT) || KeyListener.isKeyPressed(GLFW_KEY_A)) {
-            camera.position.x -= 250f * dt;
-        } else if (KeyListener.isKeyPressed(GLFW_KEY_RIGHT) || KeyListener.isKeyPressed(GLFW_KEY_D)) {
-            camera.position.x += 250f * dt;
+        if (spriteFlipTimeLeft <= 0) {
+            spriteFlipTimeLeft = spriteFlipTime;
+            spriteIndex++;
+
+            if (spriteIndex > 3) {
+                spriteIndex = 0;
+            }
+
+            mario.getComponent(SpriteRenderer.class).setSprite(sprites.getSprite(spriteIndex));
         }
 
         for (GameObject go : this.gameObjects) {
