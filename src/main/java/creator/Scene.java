@@ -23,6 +23,7 @@ public abstract class Scene {
             go.start();
             this.renderer.add(go);
         }
+
         isRunning = true;
     }
 
